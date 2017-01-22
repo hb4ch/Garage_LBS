@@ -18,6 +18,7 @@ public abstract class Environment {
     }
     public abstract List<String> getAps();
     public abstract Map<String, Integer> generateFingerprint(Set<String> base);
+    public abstract void destroy();
 
     public static Environment getInstance(Context context) {
         return new EnvironmentImpl(context);

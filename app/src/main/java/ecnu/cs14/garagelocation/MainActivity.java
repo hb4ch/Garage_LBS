@@ -23,6 +23,7 @@ public final class MainActivity extends AppCompatActivity {
 
     private MapView mapView;
     private Environment environment;
+    private final MainActivityHandler mHandler = new MainActivityHandler(this);
 
     private static final class MainActivityHandler extends android.os.Handler {
         private final WeakReference<MainActivity> mActivity;
@@ -88,7 +89,6 @@ public final class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         Log.i(TAG, "onResume: started");
-        final MainActivityHandler handler = new MainActivityHandler(this);
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -97,9 +97,14 @@ public final class MainActivity extends AppCompatActivity {
                 Message message = new Message();
                 message.obj = fingerprint;
                 message.what = MainActivityHandler.MSG_FINGERPRINT;
-                handler.sendMessage(message);
+                mHandler.sendMessage(message);
             }
         }).start();
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        environment.destroy();
+    }
 }

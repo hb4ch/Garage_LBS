@@ -61,4 +61,8 @@ final class Wifi extends BroadcastReceiver {
     void registerScanResultsReceiver(ScanResultsReceiver receiver) {
         mCallbacks.add(new WeakReference<>(receiver));
     }
+
+    void destroy() {
+        mContext.unregisterReceiver(this);
+    }
 }

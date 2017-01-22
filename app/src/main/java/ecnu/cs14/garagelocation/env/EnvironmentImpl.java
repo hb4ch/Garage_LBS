@@ -3,6 +3,7 @@ package ecnu.cs14.garagelocation.env;
 import android.content.Context;
 import android.net.wifi.ScanResult;
 import android.net.wifi.WifiManager;
+import android.support.annotation.NonNull;
 import android.util.Log;
 
 import java.util.*;
@@ -35,7 +36,12 @@ final class EnvironmentImpl extends Environment implements Wifi.ScanResultsRecei
         }
     }
 
+    /**
+     * Get all aps in the area. A timeout results in an empty return. Time consuming.
+     * @return A {@code list} of aps' MAC addresses ordered by level.
+     */
     @Override
+    @NonNull
     public List<String> getAps() {
         List<String> list = new ArrayList<>();
         mWifi.scan();
@@ -54,7 +60,7 @@ final class EnvironmentImpl extends Environment implements Wifi.ScanResultsRecei
             Collections.sort(mResults, new Comparator<ScanResult>() {
                 @Override
                 public int compare(ScanResult lhs, ScanResult rhs) {
-                    return lhs.level - rhs.level;
+                    return rhs.level - lhs.level;
                 }
             });
             for (ScanResult sr :
@@ -67,7 +73,13 @@ final class EnvironmentImpl extends Environment implements Wifi.ScanResultsRecei
         return list;
     }
 
+    /**
+     * Generates a fingerprint according to the given base. A timeout results in an empty return. Time consuming.
+     * @param base A set of MAC addresses on which the calculation is based.
+     * @return The fingerprint in the form of a {@code Map} of MAC-level pairs.
+     */
     @Override
+    @NonNull
     public Map<String, Integer> generateFingerprint(Set<String> base) {
         int sampleCnt = 5;
         List[] scans = new List[sampleCnt];
@@ -107,5 +119,10 @@ final class EnvironmentImpl extends Environment implements Wifi.ScanResultsRecei
         }
         Log.i(TAG, "generateFingerprint: fingerprint made");
         return fingerprint;
+    }
+
+    @Override
+    public void destroy() {
+        mWifi.destroy();
     }
 }
