@@ -2,9 +2,9 @@ package ecnu.cs14.garagelocation.env;
 
 import android.content.Context;
 
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * Provides all APs and generates fingerprint according to a base.
@@ -17,7 +17,7 @@ public abstract class Environment {
 
     }
     public abstract List<String> getAps();
-    public abstract HashMap<String, Integer> generateFingerprint(HashSet<String> base);
+    public abstract Map<String, Integer> generateFingerprint(Set<String> base);
 
     public static Environment getInstance(Context context) {
         return new EnvironmentImpl(context);

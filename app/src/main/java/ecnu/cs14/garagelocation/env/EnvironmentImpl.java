@@ -16,14 +16,12 @@ final class EnvironmentImpl extends Environment implements Wifi.ScanResultsRecei
     private final static String TAG = EnvironmentImpl.class.getName();
 
     private Wifi mWifi = null;
-    private Context mContext = null;
     private final List<ScanResult> mResults = new ArrayList<>();
     private boolean mResultsUpdated = false;
 
     EnvironmentImpl(Context context) {
         super(context);
-        mContext = context;
-        mWifi = new Wifi(mContext);
+        mWifi = new Wifi(context);
         mWifi.registerScanResultsReceiver(this);
     }
 
@@ -39,16 +37,19 @@ final class EnvironmentImpl extends Environment implements Wifi.ScanResultsRecei
 
     @Override
     public List<String> getAps() {
-        ArrayList<String> list = new ArrayList<>();
+        List<String> list = new ArrayList<>();
         mWifi.scan();
         synchronized (mResults) {
-            while (!mResultsUpdated) {
+            if (!mResultsUpdated) {
                 try {
                     Log.i(TAG, "getAps: waiting for scan results");
-                    mResults.wait(5000);
+                    mResults.wait(15000);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
+            }
+            if (!mResultsUpdated) {
+                return new ArrayList<>();
             }
             Collections.sort(mResults, new Comparator<ScanResult>() {
                 @Override
@@ -67,26 +68,29 @@ final class EnvironmentImpl extends Environment implements Wifi.ScanResultsRecei
     }
 
     @Override
-    public HashMap<String, Integer> generateFingerprint(HashSet<String> base) {
+    public Map<String, Integer> generateFingerprint(Set<String> base) {
         int sampleCnt = 5;
         List[] scans = new List[sampleCnt];
         for (int i = 0; i < sampleCnt; i++) {
             synchronized (mResults) {
                 mWifi.scan();
-                while (!mResultsUpdated) {
+                if (!mResultsUpdated) {
                     try {
                         Log.i(TAG, "generateFingerprint: waiting for scan results");
-                        mResults.wait(5000);
+                        mResults.wait(15000);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
+                }
+                if (!mResultsUpdated) {
+                    return new HashMap<>();
                 }
                 scans[i] = new ArrayList<>(mResults);
                 mResultsUpdated = false;
             }
         }
 
-        HashMap<String, Integer> fingerprint = new HashMap<>();
+        Map<String, Integer> fingerprint = new HashMap<>();
         for (String mac :
                 base) {
             int signal = 0;
