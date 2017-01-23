@@ -10,13 +10,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
+import ecnu.cs14.garagelocation.data.Ap;
+import ecnu.cs14.garagelocation.data.Fingerprint;
 import ecnu.cs14.garagelocation.env.Environment;
 
 import java.lang.ref.WeakReference;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 
 public final class MainActivity extends AppCompatActivity {
     private final static String TAG = MainActivity.class.getName();
@@ -92,8 +93,8 @@ public final class MainActivity extends AppCompatActivity {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                List<String> aps = environment.getAps();
-                Map<String, Integer> fingerprint = environment.generateFingerprint(new HashSet<>(aps));
+                List<Ap> aps = environment.getAps();
+                Fingerprint fingerprint = environment.generateFingerprint(new HashSet<>(aps));
                 Message message = new Message();
                 message.obj = fingerprint;
                 message.what = MainActivityHandler.MSG_FINGERPRINT;
