@@ -88,7 +88,7 @@ public final class Map {
     }
 
     public Map(JSONObject json) throws JSONException {
-        name = json.optString("name", "");
+        name = getNameFromJson(json);
         width = json.getInt("width");
         height = json.getInt("height");
         shapes = new HashSet<>();
@@ -98,11 +98,7 @@ public final class Map {
                 shapes.add(Shape.fromJson(shapesJson.getJSONObject(i)));
             }
         }
-        aps = new ArrayList<>();
-        JSONArray apsJson = json.getJSONArray("aps");
-        for (int i = 0; i < apsJson.length(); i++) {
-            aps.add(new Ap(apsJson.getJSONObject(i)));
-        }
+        aps = getApsFromJson(json);
         samples = new HashSet<>();
         JSONArray samplesJson = json.getJSONArray("samples");
         for (int i = 0; i < samplesJson.length(); i++) {
@@ -128,5 +124,18 @@ public final class Map {
             json.accumulate("samples", sample.toJson(aps));
         }
         return json;
+    }
+
+    public static String getNameFromJson(JSONObject json) throws JSONException {
+        return json.optString("name", "");
+    }
+
+    public static List<Ap> getApsFromJson(JSONObject json) throws JSONException{
+        List<Ap> aps = new ArrayList<>();
+        JSONArray apsJson = json.getJSONArray("aps");
+        for (int i = 0; i < apsJson.length(); i++) {
+            aps.add(new Ap(apsJson.getJSONObject(i)));
+        }
+        return aps;
     }
 }

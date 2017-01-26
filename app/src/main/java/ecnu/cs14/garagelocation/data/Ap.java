@@ -23,4 +23,12 @@ public final class Ap extends Pair<String, String> {
     public JSONObject toJson() throws JSONException {
         return new JSONObject().putOpt("ssid", ssid).put("mac", mac);
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o instanceof Ap) {
+            return mac.equals(((Ap) o).mac);
+        }
+        return super.equals(o);
+    }
 }
