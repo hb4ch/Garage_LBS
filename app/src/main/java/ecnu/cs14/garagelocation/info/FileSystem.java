@@ -7,9 +7,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.*;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
+import java.util.*;
 
 /**
  * The low level of the map storing system. Loads JSONs for {@link MapSet}.
@@ -17,9 +15,11 @@ import java.util.Map;
  */
 
 final class FileSystem {
+    private Context context;
     private AssetManager manager;
     private Map<Ap, String> index;
-    public FileSystem(Context context) {
+    FileSystem(Context context) {
+        this.context = context;
         manager = context.getAssets();
     }
 
@@ -38,7 +38,7 @@ final class FileSystem {
     }
 
     private static final String INDEX_FILENAME = "map-index.json";
-    public Map<Ap, String> getIndex() throws IOException, JSONException {
+    Map<Ap, String> getIndex() throws IOException, JSONException {
         if (index != null) {
             return index;
         }
@@ -54,16 +54,50 @@ final class FileSystem {
         return index;
     }
 
-    public JSONObject getMapSetJson(String filename) throws IOException, JSONException {
+    private void updateIndex(List<Ap> aps, String filename) throws IOException, JSONException {
+        Map<Ap, String> index = getIndex();
+        for (Ap ap :
+                aps) {
+            index.put(ap, filename);
+        }
+        JSONObject json = new JSONObject(index);
+        FileOutputStream stream = context.openFileOutput(INDEX_FILENAME, Context.MODE_PRIVATE);
+        stream.write(json.toString().getBytes());
+    }
+
+    JSONObject getMapSetJson(String filename) throws IOException, JSONException {
         InputStream stream = manager.open(filename);
         String fileString = streamToString(stream);
         return new JSONObject(fileString);
     }
 
-    public JSONObject getMapSetJson(Ap ap) throws IOException, JSONException {
+    JSONObject getMapSetJson(Ap ap) throws IOException, JSONException {
         if (null == index) {
             getIndex();
         }
         return getMapSetJson(index.get(ap));
+    }
+
+    void saveMapSet(MapSet mapSet) throws IOException, JSONException {
+        Random random = new Random();
+        String[] files = context.fileList();
+        int filenameInt = random.nextInt();
+        String filename;
+        boolean continueFlag;
+        do {
+            continueFlag = false;
+            filename = Integer.toString(filenameInt) + ".json";
+            for (String file :
+                    files) {
+                if (file.equals(filename)) {
+                    continueFlag = true;
+                    filenameInt = random.nextInt();
+                    break;
+                }
+            }
+        } while (continueFlag);
+        FileOutputStream stream = context.openFileOutput(filename, Context.MODE_PRIVATE);
+        stream.write(mapSet.toJson().toString().getBytes());
+        updateIndex(mapSet.getAps(), filename);
     }
 }

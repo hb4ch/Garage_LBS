@@ -21,9 +21,9 @@ public class MapSetSelector {
     /**
      * Select.
      * @param aps A {@link List} of {@link Ap} ordered by signal levels.
-     * @return The most probable {@link MapSet}.
+     * @return The most probable {@link MapSet}'s filename.
      */
-    public MapSet select(List<Ap> aps) {
+    public String selectFilename(List<Ap> aps) {
         final int select_threshold = 3;
         int max = 0;
         String maxFilename = null;
@@ -57,6 +57,16 @@ public class MapSetSelector {
                 }
             }
         }
+        return maxFilename;
+    }
+
+    /**
+     * Select.
+     * @param aps A {@link List} of {@link Ap} ordered by signal levels.
+     * @return The most probable {@link MapSet}.
+     */
+    public MapSet select(List<Ap> aps) {
+        String maxFilename = selectFilename(aps);
         try {
             return new MapSet(fileSystem.getMapSetJson(maxFilename));
         } catch (Exception e) {
