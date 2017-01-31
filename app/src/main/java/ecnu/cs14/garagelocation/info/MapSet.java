@@ -35,6 +35,10 @@ public final class MapSet {
 
     public MapSet(List<Map> maps) {
         this.maps = new ArrayList<>(maps);
+        for (Map map:
+             this.maps) {
+            aps.addAll(map.aps);
+        }
     }
 
     public JSONObject toJson() throws JSONException {
