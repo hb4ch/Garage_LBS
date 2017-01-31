@@ -18,6 +18,10 @@ public final class Sample extends Pair<Pair<Integer, Integer>, Fingerprint> {
         );
     }
 
+    public Sample(Pair<Integer, Integer> position, Fingerprint fingerprint) {
+        super(position, fingerprint);
+    }
+
     public JSONObject toJson(List<Ap> base) throws JSONException {
         return new JSONObject().put("x", first.first).put("y", first.second).put("fingerprint", second.toJson(base));
     }
