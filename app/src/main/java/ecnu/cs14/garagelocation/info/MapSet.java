@@ -84,6 +84,10 @@ public final class MapSet {
         return maps.get(selected);
     }
 
+    public List<Map> getMaps() {
+        return maps;
+    }
+
     public List<Ap> getAps() {
         return aps;
     }
