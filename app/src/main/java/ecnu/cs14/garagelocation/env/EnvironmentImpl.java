@@ -82,7 +82,7 @@ final class EnvironmentImpl extends Environment implements Wifi.ScanResultsRecei
      */
     @Override
     @NonNull
-    public Fingerprint generateFingerprint(Set<Ap> base) {
+    public Fingerprint generateFingerprint(Collection<Ap> base) {
         int sampleCnt = 5;
         List[] scans = new List[sampleCnt];
         for (int i = 0; i < sampleCnt; i++) {

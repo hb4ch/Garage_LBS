@@ -4,6 +4,7 @@ import android.content.Context;
 import ecnu.cs14.garagelocation.data.Ap;
 import ecnu.cs14.garagelocation.data.Fingerprint;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
@@ -18,7 +19,7 @@ public abstract class Environment {
 
     }
     public abstract List<Ap> getAps();
-    public abstract Fingerprint generateFingerprint(Set<Ap> base);
+    public abstract Fingerprint generateFingerprint(Collection<Ap> base);
     public abstract void destroy();
 
     public static Environment getInstance(Context context) {
