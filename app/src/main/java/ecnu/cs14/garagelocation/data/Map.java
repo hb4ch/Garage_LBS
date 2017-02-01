@@ -100,9 +100,11 @@ public final class Map {
         }
         aps = getApsFromJson(json);
         samples = new HashSet<>();
-        JSONArray samplesJson = json.getJSONArray("samples");
-        for (int i = 0; i < samplesJson.length(); i++) {
-            samples.add(new Sample(aps, samplesJson.getJSONObject(i)));
+        JSONArray samplesJson = json.optJSONArray("samples");
+        if (null != samplesJson) {
+            for (int i = 0; i < samplesJson.length(); i++) {
+                samples.add(new Sample(aps, samplesJson.getJSONObject(i)));
+            }
         }
     }
 

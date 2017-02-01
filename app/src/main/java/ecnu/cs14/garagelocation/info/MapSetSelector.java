@@ -1,6 +1,5 @@
 package ecnu.cs14.garagelocation.info;
 
-import android.content.Context;
 import ecnu.cs14.garagelocation.data.Ap;
 
 import java.util.HashMap;
@@ -11,11 +10,11 @@ import java.util.Map;
  * Select {@link MapSet} according to given aps.
  * Created by K on 2017/1/25.
  */
-public class MapSetSelector {
+class MapSetSelector {
     private FileSystem fileSystem;
 
-    public MapSetSelector(Context context) {
-        fileSystem = new FileSystem(context);
+    MapSetSelector(FileSystem fileSystem) {
+        this.fileSystem = fileSystem;
     }
 
     /**
@@ -23,7 +22,7 @@ public class MapSetSelector {
      * @param aps A {@link List} of {@link Ap} ordered by signal levels.
      * @return The most probable {@link MapSet}'s filename.
      */
-    public String selectFilename(List<Ap> aps) {
+    String selectFilename(List<Ap> aps) {
         final int select_threshold = 3;
         int max = 0;
         String maxFilename = null;
@@ -65,7 +64,7 @@ public class MapSetSelector {
      * @param aps A {@link List} of {@link Ap} ordered by signal levels.
      * @return The most probable {@link MapSet}.
      */
-    public MapSet select(List<Ap> aps) {
+    MapSet select(List<Ap> aps) {
         String maxFilename = selectFilename(aps);
         try {
             return new MapSet(fileSystem.getMapSetJson(maxFilename));

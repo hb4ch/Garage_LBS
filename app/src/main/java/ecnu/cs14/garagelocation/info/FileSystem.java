@@ -96,6 +96,10 @@ final class FileSystem {
                 }
             }
         } while (continueFlag);
+        saveMapSet(filename, mapSet);
+    }
+
+    void saveMapSet(String filename, MapSet mapSet) throws IOException, JSONException {
         FileOutputStream stream = context.openFileOutput(filename, Context.MODE_PRIVATE);
         stream.write(mapSet.toJson().toString().getBytes());
         updateIndex(mapSet.getAps(), filename);

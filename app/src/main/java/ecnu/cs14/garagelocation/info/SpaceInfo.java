@@ -12,7 +12,7 @@ import java.util.List;
  */
 
 public abstract class SpaceInfo {
-    public SpaceInfo(Context context) {
+    SpaceInfo(Context context) {
 
     }
 
@@ -21,4 +21,8 @@ public abstract class SpaceInfo {
     public abstract Map selectMap(int index);
     public abstract void updateMap(int index, Map map);
     public abstract void saveAllMaps();
+
+    public static SpaceInfo getInstance(Context context) {
+        return new SpaceInfoAdapter(context);
+    }
 }

@@ -15,12 +15,12 @@ import java.util.List;
  * Created by K on 2017/1/25.
  */
 
-public final class MapSet {
+final class MapSet {
     private List<Map> maps;
     private List<Ap> aps;
     private int selected = 0;
 
-    public MapSet(JSONObject json) throws JSONException {
+    MapSet(JSONObject json) throws JSONException {
         maps = new ArrayList<>();
         aps = new ArrayList<>();
         JSONArray mapsJson = json.getJSONArray("maps");
@@ -33,7 +33,7 @@ public final class MapSet {
         }
     }
 
-    public MapSet(List<Map> maps) {
+    MapSet(List<Map> maps) {
         this.maps = new ArrayList<>(maps);
         for (Map map:
              this.maps) {
@@ -41,7 +41,7 @@ public final class MapSet {
         }
     }
 
-    public JSONObject toJson() throws JSONException {
+    JSONObject toJson() throws JSONException {
         JSONObject json = new JSONObject();
         HashSet<Ap> aps = new HashSet<>();
         for (Map map :
@@ -64,7 +64,7 @@ public final class MapSet {
      * @param aps The {@link List} of {@link Ap}.
      * @return The {@link Map}.
      */
-    public Map getMap(List<Ap> aps) {
+    Map getMap(List<Ap> aps) {
         int[] fitCount = new int[maps.size()];
         int max = 0;
         int indexMax = 0;
@@ -83,16 +83,16 @@ public final class MapSet {
         return maps.get(selected);
     }
 
-    public Map getSelectedMap(int index) {
+    Map getSelectedMap(int index) {
         selected = index;
         return maps.get(selected);
     }
 
-    public List<Map> getMaps() {
+    List<Map> getMaps() {
         return maps;
     }
 
-    public List<Ap> getAps() {
+    List<Ap> getAps() {
         return aps;
     }
 }
