@@ -63,6 +63,14 @@ final class Wifi extends BroadcastReceiver {
     }
 
     void destroy() {
-        mContext.unregisterReceiver(this);
+        try {
+            mContext.unregisterReceiver(this);
+        } catch (IllegalArgumentException e) {
+            if (!e.getMessage().startsWith("Receiver not registered")) {
+                throw e;
+            } else {
+                Log.d(TAG, "destroy: Duplicate un-registration caught.");
+            }
+        }
     }
 }
