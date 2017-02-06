@@ -60,7 +60,12 @@ final class FileSystem {
                 aps) {
             index.put(ap, filename);
         }
-        JSONObject json = new JSONObject(index);
+        Map<String, String> stringIndex = new HashMap<>();
+        for (Ap key :
+                index.keySet()) {
+            stringIndex.put(key.mac, filename);
+        }
+        JSONObject json = new JSONObject(stringIndex);
         FileOutputStream stream = context.openFileOutput(INDEX_FILENAME, Context.MODE_PRIVATE);
         stream.write(json.toString().getBytes());
     }

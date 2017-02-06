@@ -1,5 +1,6 @@
 package ecnu.cs14.garagelocation.info;
 
+import android.util.Log;
 import ecnu.cs14.garagelocation.data.Ap;
 
 import java.util.HashMap;
@@ -11,6 +12,7 @@ import java.util.Map;
  * Created by K on 2017/1/25.
  */
 class MapSetSelector {
+    private final static String TAG = MapSetSelector.class.getName();
     private FileSystem fileSystem;
 
     MapSetSelector(FileSystem fileSystem) {
@@ -55,6 +57,9 @@ class MapSetSelector {
                     maxFilename = filename;
                 }
             }
+        }
+        if (maxFilename == null) {
+            Log.w(TAG, "selectFilename: No file selected.");
         }
         return maxFilename;
     }
