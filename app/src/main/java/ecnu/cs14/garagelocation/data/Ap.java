@@ -31,4 +31,9 @@ public final class Ap extends Pair<String, String> {
         }
         return super.equals(o);
     }
+
+    @Override
+    public int hashCode() {
+        return mac.hashCode();
+    }
 }
