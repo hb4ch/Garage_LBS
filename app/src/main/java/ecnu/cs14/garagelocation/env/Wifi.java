@@ -61,4 +61,16 @@ final class Wifi extends BroadcastReceiver {
     void registerScanResultsReceiver(ScanResultsReceiver receiver) {
         mCallbacks.add(new WeakReference<>(receiver));
     }
+
+    void destroy() {
+        try {
+            mContext.unregisterReceiver(this);
+        } catch (IllegalArgumentException e) {
+            if (!e.getMessage().startsWith("Receiver not registered")) {
+                throw e;
+            } else {
+                Log.d(TAG, "destroy: Duplicate un-registration caught.");
+            }
+        }
+    }
 }

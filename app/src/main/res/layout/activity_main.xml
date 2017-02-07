@@ -17,4 +17,23 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentStart="true" />
 
+    <ProgressBar
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/progressBar"
+        android:indeterminate="true"
+        android:visibility="gone" />
+
+    <Button
+        android:text="Take Sample"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:id="@+id/sample_button"
+        android:onClick="takeSample"/>
+
 </RelativeLayout>
