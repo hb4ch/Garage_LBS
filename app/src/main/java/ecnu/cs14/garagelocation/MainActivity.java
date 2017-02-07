@@ -74,6 +74,7 @@ public final class MainActivity extends AppCompatActivity {
         mMapView.setVisibility(View.VISIBLE);
         mSampleButton.setVisibility(View.VISIBLE);
         mSampleButton.setClickable(true);
+        mMapView.setMap(mSniffer.getMaps().get(mSniffer.getMapIndex()));
     }
 
     private boolean mFingerprintUpdated = false;
@@ -184,6 +185,7 @@ public final class MainActivity extends AppCompatActivity {
                         mHandler.sendMessage(msg);
                     }
                 })
+                .setCancelable(false)
                 .show();
     }
 
